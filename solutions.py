@@ -1,5 +1,6 @@
 import math
 import sympy as sym
+import numpy as num
 def f(x):
     function = lambda x: input()
     return function
@@ -73,5 +74,4 @@ def Newton(x0):
         print('\nRequired root is: %0.8f' % x1)
     else:
         print('\nNot Convergent.')
-
 
