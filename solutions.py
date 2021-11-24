@@ -1,77 +1,147 @@
-import math
+from math import sin, cos, tan, log, exp
+from sympy import var
+from sympy import sympify
+from sympy.utilities.lambdify import lambdify
+from sympy import symbols
 import sympy as sym
-def f(x):
-    function = lambda x: input()
-    return function
+def f(equation,value):
+    equation = equation.replace('ln', 'sym.log')
+    equation = equation.replace('sin', 'sym.sin')
+    equation = equation.replace('cos', 'sym.cos')
+    equation = equation.replace('tan', 'sym.tan')
+    equation = equation.replace('exp', 'sym.exp')
+    equation = equation.replace('^', '**')
+    x = var('x')
+    expr = sympify(equation)
+    res = expr.subs(x, value)
+    return res
+def g(equation,value):
+    equation = equation.replace('ln', 'sym.log')
+    equation = equation.replace('sin', 'sym.sin')
+    equation = equation.replace('cos', 'sym.cos')
+    equation = equation.replace('tan', 'sym.tan')
+    equation = equation.replace('exp', 'sym.exp')
+    equation = equation.replace('^', '**')
+    x = var('x')
+    expr = sympify(equation)
+    res = expr.subs(x, value)
+    return res
 
+def differentiation(equation,value):
+    equation = equation.replace('ln', 'sym.log')
+    equation = equation.replace('sin', 'sym.sin')
+    equation = equation.replace('cos', 'sym.cos')
+    equation = equation.replace('tan', 'sym.tan')
+    equation = equation.replace('exp', 'sym.exp')
+    equation = equation.replace('^', '**')
+    x = symbols('x')
+    differ = eval(equation).diff(x)
+    return differ.evalf(subs={x: value})
+def bisection(equation,xu,xl):
+    max_iterations = 50
+    epsilon = 0.0001
 
-def bisection(xu, xl):
-    iteration = 1
-    Condition = True
-    if f(xu) * f(xl) >= 0:
+    if f(equation,xu) * f(equation,xl) >= 0:
         print("error in range")
         exit()
     else:
-        while Condition:
-            xr = (xu + xl) / 2
-            print(' In iteration-%d, x2 = %0.6f and f(x2) = %0.6f' % (iteration, xr, f(xr)))
-            if f(xl) * f(xr) < 0:
+        xr = (xu + xl)/2
+        iterations = 1
+
+        for i in range(1, max_iterations):
+            if f(equation, xr) * f(equation, xl) < 0:
                 xu = xr
-            else:
+            elif f(equation, xr) * f(equation, xl) > 0:
                 xl = xr
-
-            iteration = iteration + 1
-            if iteration > 50:
+            prev = xr
+            xr = (xl + xu) / 2
+            approximate_error = abs((xr - prev) / xr)
+            iterations = iterations + 1
+            if approximate_error < epsilon:
                 break
+    output = 'xr = : ' + str(xr) + ' , number of iterations = ' + str(iterations)
+    return (output)
 
-            Condition = abs(f(xr)) > 0.00001
-    print('\n the required root is %0.6f ' % xr)
 
 
-def falsi(xu,xl):
-    iteration = 1
-    condition = True
-    if f(xu) * f(xl) >= 0:
+
+def falsi(equation,xu,xl):
+
+    max_iterations = 50
+    epsilon = 0.0001
+
+    if f(equation,xu) * f(equation,xl) >= 0:
         print("error in range")
         exit()
     else:
-        while condition:
-            xr = ((xl*f(xu))-(xu*f(xl)))/(f(xu)-f(xl))
-            print('In iteration-%d, x2 = %0.6f and f(x2) = %0.6f' % (iteration, xr, f(xr)))
-            if f(xr) < 0:
+        iteration = 1
+        xr = ((xl * f(equation, xu)) - (xu * f(equation, xl))) / (f(equation, xu) - f(equation, xl))
+        for i in range(1, max_iterations):
+
+
+
+            if f(equation,xr) < 0:
                 xl = xr
-            else:
+            elif  f(equation,xr) > 0:
                 xu = xr
             iteration = iteration + 1
-            if iteration > 50:
+            prev = xr
+            xr = ((xl * f(equation, xu)) - (xu * f(equation, xl))) / (f(equation, xu) - f(equation, xl))
+            approximate_error = abs((xr - prev) / xr)
+            if approximate_error < epsilon:
                 break
-            condition = abs(f(xr)) > 0.00001
+            else:
+                break
+    output = 'xr = : ' + str(xr) + ' , number of iterations = ' + str(iteration)
+    return output
 
-    print('\n the required root is %0.6f ' % xr)
-def Newton(x0):
+def Newton(equation,x0):
+    iterations = 0
+    max_iteration = 50
+    epsilon = 0.0001
+    x = x0
 
-    iteration = 1
-    flag = 1
-    condition = True
-    while condition:
-        f1 = sym.diff(f(x0))
-        if f1 ==0.0:
-            print('Divide by zero error!')
+    for i in range(max_iteration):
+        iterations += 1
+        fx = f(equation,x)
+
+        xn = x
+        x = x - (fx / differentiation(equation,x))
+        ea = abs((x - xn) / x)
+
+        if ea < epsilon:
             break
-        x1 = x0 - f(x0) / f1
-        print('Iteration-%d, x1 = %0.6f and f(x1) = %0.6f' % (iteration, x1, f(x1)))
-        x0 = x1
+    output = 'root = : ' + str(x) + ' , number of iterations = ' + str(iterations)
+    return output
+
+def fixed(equation1,equation2,x0):
+    max_iteration = 50
+    epsilon = 0.00001
+    x = x0
+    iterations = 0
+    for i in range(max_iteration):
+        iterations = iterations + 1
+        xf = x
+        x = g(equation2,x)
+        ea = abs((x - xf) / x)
+        if ea < epsilon:
+            break
+    output = 'root = : ' + str(x) + ' , number of iterations = ' + str(iterations)
+    return output
+def secant(equation,x0,x1):
+    max_iteration = 50
+    epsilon = 0.00001
+    iteration = 0
+    for i in range (max_iteration):
         iteration = iteration + 1
-
-        if iteration > 50:
-            flag = 0
+        x2 = x0 - (x1 - x0) * f(equation,x0) / (f(equation,x1) - f(equation,x0))
+        x0 = x1
+        x1 = x2
+        ea = abs((x2-x0)/x2)
+        if ea < epsilon:
             break
+    output = 'root = : ' + str(x2) + ' , number of iterations = ' + str(iteration)
+    return output
 
-        condition = abs(f(x1)) > 0.00001
-
-    if flag == 1:
-        print('\nRequired root is: %0.8f' % x1)
-    else:
-        print('\nNot Convergent.')
 
 
