@@ -14,7 +14,7 @@ window.title('Numerical Methods for Root finding')
 window.geometry('1500x800')
 lbl = ttk.Label(window, text = "Enter the name:").grid(column = 0, row = 0)# Click event
 def click():
-    bisection(name.get(),1.111,0.9999)
+   lb1=ttk.Label(window,text = bisection(name.get(),1.111,0.9999)).grid(column =2, row = 2)
 name = tk.StringVar()
 nameEntered = ttk.Entry(window, width = 12, textvariable = name).grid(column = 0, row = 1)# Button widget
 button = ttk.Button(window, text = "submit", command = click).grid(column = 1, row = 1)
