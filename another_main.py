@@ -25,6 +25,9 @@ class CustomDropDown(BoxLayout):
         print(inputText, selection)
         self.ids.answerField.text = inputText + " " + selection
 
+    def upload(self):
+        pass
+
 
 class CalculatorApp(App):
     def build(self):

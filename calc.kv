@@ -2,49 +2,80 @@
 
     BoxLayout:
         orientation: "vertical"
-        TextInput:
-            id : inputField
-
-        Button:
-            id: evaluatebtn
-            text: "evaluate"
-            on_release: root.evaluate(inputField.text, diffbtn.text)
+        BoxLayout:
+            orientation: "horizontal"
+            Label:
+                text: "f(x)"
+            TextInput:
+                id : fxInputField
+            Button:
+                id: uploadBtn
+                text: "file explorer"
+                on_release: root.upload()
 
         BoxLayout:
             orientation: "horizontal"
             Label:
-                text: "answer"
-                text_size: self.size
-                halign: 'left'
-                valign: 'top'
-                bold: True
+                text : "Max"
+            TextInput:
+                id : maxTextArea
             Label:
-                id : answerField
-                text_size: self.size
-                halign: 'left'
-                valign: 'top'
-                bold: True
-
-
-        Button:
-            id: diffbtn
-            text: 'function1'
-            on_parent: dropdown.dismiss()
-            on_release:
-                if not root.state: dropdown.open(self); root.state = True
-                else: dropdown.dismiss(); root.state = False
-
-        DropDown:
-            id: dropdown
-            on_select: diffbtn.text = '{}'.format(args[1]); root.state = False
+                text : "precision"
+            TextInput:
+                id : precisionTextArea
             Button:
+                id: diffbtn
                 text: 'function1'
-                size_hint_y: None
-                height: 35
-                on_release: root.selection(self.text)
+                on_parent: dropdown.dismiss()
+                on_release:
+                    if not root.state: dropdown.open(self); root.state = True
+                    else: dropdown.dismiss(); root.state = False
 
+            DropDown:
+                id: dropdown
+                on_select: diffbtn.text = '{}'.format(args[1]); root.state = False
+                Button:
+                    text: 'function1'
+                    size_hint_y: None
+                    height: 35
+                    on_release: root.selection(self.text)
+
+                Button:
+                    text: 'function2'
+                    size_hint_y: None
+                    height: 35
+                    on_release: root.selection(self.text)
+        BoxLayout:
+            orientation: "horizontal"
+            Label:
+                text : "x1"
+            TextInput:
+                id : x1TextArea
+            Label:
+                text : "x2"
+            TextInput:
+                id : x2TextArea
+
+        BoxLayout:
+            orientation: "horizontal"
+            Label:
+                text : "g(x)"
+            TextInput:
+                id : gxInputField
             Button:
-                text: 'function2'
-                size_hint_y: None
-                height: 35
-                on_release: root.selection(self.text)
+                id: evaluatebtn
+                text: "evaluate"
+                on_release: root.evaluate(fxInputField.text, diffbtn.text)
+
+        BoxLayout:
+            orientation: "horizontal"
+            BoxLayout:
+                orientation: "horizontal"
+                Label:
+                    text: "answer"
+                Label:
+                    id : answerField
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'top'
+                    bold: True
