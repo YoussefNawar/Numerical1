@@ -1,10 +1,11 @@
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 
 # Set the app size
 # Window.size = (500, 700)
-
+# Window.clearcolor = (255/255, 255/255, 255/255, 1)
 # Designate Our .kv design file 
 Builder.load_file('calc.kv')
 
