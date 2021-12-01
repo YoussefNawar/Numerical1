@@ -14,15 +14,34 @@ class CustomDropDown(BoxLayout):
     state = False
 
     def selection(self, text):
-        """
-            useless function
-            shows how to get variables from the calc.kv 'you can consider it somehow an html file
-        """
-        print(text)
+        if text == 'Bisection':
+            self.ids.x2.opacity = 1
+            self.ids.x2TextArea.opacity = 1
+            self.ids.gxInputField.opacity = 0
+            self.ids.gx.opacity = 0
+        elif text == 'Regula falsi':
+            self.ids.x2.opacity = 1
+            self.ids.x2TextArea.opacity = 1
+            self.ids.gxInputField.opacity = 0
+            self.ids.gx.opacity = 0
+        elif text == 'Fixed point':
+            self.ids.x2.opacity = 0
+            self.ids.x2TextArea.opacity = 0
+            self.ids.gxInputField.opacity = 1
+            self.ids.gx.opacity = 1
+        elif text == 'Newton Raphhsen':
+            self.ids.x2.opacity = 0
+            self.ids.x2TextArea.opacity = 0
+            self.ids.gxInputField.opacity = 0
+            self.ids.gx.opacity = 0
+        else:
+            self.ids.x2.opacity = 1
+            self.ids.x2TextArea.opacity = 1
+            self.ids.gxInputField.opacity = 0
+            self.ids.gx.opacity = 0
         self.ids.dropdown.select(text)
 
     def evaluate(self, inputText, selection):
-        # TODO: do something useful
         print(inputText, selection)
         self.ids.answerField.text = inputText + " " + selection
 

@@ -36,6 +36,7 @@
                 BoxLayout:
                     orientation: "horizontal"
                     Label:
+                        id : maxIteration
                         text : "Max Iterations"
                         size :(18, 32)
                     TextInput:
@@ -44,6 +45,7 @@
                 BoxLayout:
                     orientation: "horizontal"
                     Label:
+                        id : precision
                         text : "precision"
                         size : (18, 32)
                     TextInput:
@@ -53,7 +55,7 @@
 
                 Button:
                     id: diffbtn
-                    text: 'function1'
+                    text: 'Bisection'
                     size_hint_x: 0.5
                     pos_hint: {'right': 1}
                     on_parent: dropdown.dismiss()
@@ -67,13 +69,28 @@
                     size_hint_x: 0.5
                     pos_hint: {'right': 1}
                     Button:
-                        text: 'function1'
+                        text: 'Bisection'
                         size_hint_y: None
                         height: 35
                         on_release: root.selection(self.text)
 
                     Button:
-                        text: 'function2'
+                        text: 'Regula falsi'
+                        size_hint_y: None
+                        height: 35
+                        on_release: root.selection(self.text)
+                    Button:
+                        text: 'Fixed point'
+                        size_hint_y: None
+                        height: 35
+                        on_release: root.selection(self.text)
+                    Button:
+                        text: 'Newton Raphhsen'
+                        size_hint_y: None
+                        height: 35
+                        on_release: root.selection(self.text)
+                    Button:
+                        text: 'Secant'
                         size_hint_y: None
                         height: 35
                         on_release: root.selection(self.text)
@@ -87,6 +104,7 @@
                 BoxLayout:
                     orientation: "horizontal"
                     Label:
+                        id : x1
                         text : "x1"
                         size_hint_x: 0.5
                     TextInput:
@@ -95,6 +113,7 @@
                 BoxLayout:
                     orientation: "horizontal"
                     Label:
+                        id : x2
                         text : "x2"
                         size_hint_x: 0.5
                     TextInput:
@@ -108,6 +127,7 @@
             size_hint: 1, 0.125
             spacing : 20
             Label:
+                id :gx
                 text : "g(x)"
                 size_hint_x: 0.1
             TextInput:
@@ -117,7 +137,7 @@
                 size_hint_x: 0.3
                 id: evaluatebtn
                 text: "evaluate"
-                on_release: root.evaluate(fxInputField.text, diffbtn.text)
+                on_release: root.evaluate(fxInputField.text, gxInputField.txt ,diffbtn.text)
 
         BoxLayout:
             orientation: "horizontal"
