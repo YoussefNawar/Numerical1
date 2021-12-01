@@ -67,12 +67,20 @@ class CustomDropDown(BoxLayout):
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
         print(inputText, selection)
-        solutions.bisection()
+        # solutions.bisection()
         self.ids.answerField.text = inputText + " " + selection
 
     def upload(self):
-        show = LoadDialog
-        LoadDialog.show_load_list(show)
+        show = LoadDialog()
+        show.show_load_list()
+
+    def cancel(self):
+        show = LoadDialog()
+        show.dismiss_popup()
+
+    def load(self, filepath, filechooserselection):
+        show = LoadDialog()
+        show.dismiss_popup()
 
 
 class CalculatorApp(App):
@@ -81,4 +89,5 @@ class CalculatorApp(App):
 
 
 if __name__ == '__main__':
-    CalculatorApp().run()
+    app = CalculatorApp()
+    app.run()
