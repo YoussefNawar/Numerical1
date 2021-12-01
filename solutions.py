@@ -31,7 +31,7 @@ def g(equation,value):
     return res
 
 def differentiation(equation,value):
-    equation = equation.replace('ln', 'sym.log')
+    #equation = equation.replace('ln', 'sym.log')
     equation = equation.replace('sin', 'sym.sin')
     equation = equation.replace('cos', 'sym.cos')
     equation = equation.replace('tan', 'sym.tan')
@@ -44,6 +44,7 @@ def bisection(equation,xu,xl):
     t1 = timeit.default_timer()
     max_iterations = 50
     epsilon = 0.0001
+
 
     if f(equation,xu) * f(equation,xl) >= 0:
         print("error in range")
@@ -173,6 +174,7 @@ def fixed(equation1,equation2,x0):
         print(iteration)
     print("Root = ", x, "Precision: ", ea, "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
     return x, ea, iteration, iterationlist, (t2 - t1)
+#fixed("x*x*x + x*x -1","1/((x+1)**0.5)",2)
 
 def secant(equation,x0,x1):
     t1 = timeit.default_timer()
