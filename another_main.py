@@ -1,3 +1,5 @@
+import os
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -71,16 +73,18 @@ class CustomDropDown(BoxLayout):
         self.ids.answerField.text = inputText + " " + selection
 
     def upload(self):
-        show = LoadDialog()
-        show.show_load_list()
+        content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Load file", content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
 
-    def cancel(self):
-        show = LoadDialog()
-        show.dismiss_popup()
+    def dismiss_popup(self):
+        self._popup.dismiss()
 
-    def load(self, filepath, filechooserselection):
-        show = LoadDialog()
-        show.dismiss_popup()
+    def load(self, path, filename):
+        with open(os.path.join(path, filename[0])):
+            print(path,filename)
+        self.dismiss_popup()
 
 
 class CalculatorApp(App):
