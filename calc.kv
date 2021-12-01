@@ -1,5 +1,4 @@
 <CustomDropDown>
-
     BoxLayout:
         orientation: "vertical"
         size_hint: 1, 1
@@ -137,7 +136,7 @@
                 size_hint_x: 0.3
                 id: evaluatebtn
                 text: "evaluate"
-                on_release: root.evaluate(fxInputField.text, gxInputField.txt ,diffbtn.text)
+                on_release: root.evaluate(fxInputField.text, diffbtn.text, x1TextArea.text,x2TextArea.text, gxInputField.text, maxTextArea.text,precisionTextArea.text)
 
         BoxLayout:
             orientation: "horizontal"
@@ -155,3 +154,20 @@
                     valign: 'top'
                     bold: True
                     size_hint_x: 0.9
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            path: './'
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
