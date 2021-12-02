@@ -19,7 +19,6 @@ from solutions import *
 Builder.load_file('calc.kv')
 
 
-
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
@@ -34,9 +33,6 @@ class LoadDialog(FloatLayout):
 
     def dismiss_popup(self):
         self._popup.dismiss()
-
-    pass
-
 
 class CustomDropDown(BoxLayout):
     state = False
@@ -78,7 +74,7 @@ class CustomDropDown(BoxLayout):
         if selection == 'Bisection':
             answers, x = solutions.bisection(inputText, int(x1), int(x2))
         elif selection == 'Regula falsi':
-            answers, x = solutions.falsi(inputText, int(x1),int(x2))
+            answers, x = solutions.falsi(inputText, int(x1), int(x2))
         elif selection == 'Fixed point':
             answers, x = solutions.fixed(inputText, gx, int(x1))
         elif selection == 'Newton Raphhsen':
@@ -109,6 +105,9 @@ class CustomDropDown(BoxLayout):
             maxIteration = data.get("MaxIteration")
             precision = data.get("precision")
             self.evaluate(fx, Selection, x1, x2, gx, maxIteration, precision)
+        self.dismiss_popup()
+
+    def cancel(self):
         self.dismiss_popup()
 
 
