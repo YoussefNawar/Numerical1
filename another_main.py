@@ -3,10 +3,11 @@ import os
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
 
 import solutions
 from solutions import *
@@ -16,6 +17,10 @@ from solutions import *
 # Window.clearcolor = (255/255, 255/255, 255/255, 1)
 # Designate Our .kv design file 
 Builder.load_file('calc.kv')
+
+
+class ScrolllabelLabel(ScrollView):
+    text = StringProperty('')
 
 
 class LoadDialog(FloatLayout):
@@ -32,6 +37,7 @@ class LoadDialog(FloatLayout):
 
     def dismiss_popup(self):
         self._popup.dismiss()
+
     pass
 
 
@@ -39,6 +45,9 @@ class CustomDropDown(BoxLayout):
     state = False
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
+
+    def printAnswer(self, iterationList, x):
+        pass
 
     def selection(self, text):
         if text == 'Bisection':
@@ -70,15 +79,21 @@ class CustomDropDown(BoxLayout):
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
         if selection is 'Bisection':
-            self.ids.answerField.text = str(solutions.bisection(inputText,int(x2),int(x1)))
+            iterationlist, x = solutions.bisection(inputText, int(x1), int(x2))
+            self.ids.answerField.text = str(iterationlist) + str(x)
         elif selection is 'Regula falsi':
-            self.ids.answerField = str(solutions.falsi(inputText, int(x2), int(x1)))
+            iterationlist, x = solutions.falsi(inputText, int(x1),int( x2))
+            self.ids.answerField.text = str(iterationlist) + str(x)
         elif selection is 'Fixed point':
-            self.ids.answerField = str(solutions.fixed(inputText,int(gx), int(x2)))
-        elif selection is 'Newton Raphhsen':
-            self.ids.answerField = str(solutions.Newton(inputText,int(x1)))
+            iterationlist, x = solutions.fixed(inputText, gx, int(x1))
+            self.ids.answerField.text = str(iterationlist) + str(x)
+        elif selection == 'Newton Raphhsen':
+            iterationlist , x = solutions.Newton(inputText , int(x1))
+            self.ids.answerField.text = str(iterationlist) + str(x)
         else:
-            self.ids.answerField = str(solutions.secant(inputText,int(x1),int(x2)))
+            iterationlist, x = solutions.secant(inputText, int(x1),int(x2))
+            self.ids.answerField.text = str(iterationlist) + str(x)
+
     def upload(self):
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
         self._popup = Popup(title="Load file", content=content,
@@ -90,7 +105,7 @@ class CustomDropDown(BoxLayout):
 
     def load(self, path, filename):
         with open(os.path.join(path, filename[0])):
-            print(path,filename)
+            print(path, filename)
         self.dismiss_popup()
 
 
