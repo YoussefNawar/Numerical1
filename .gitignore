@@ -7,3 +7,4 @@
 .idea/inspectionProfiles/Project_Default.xml
 .idea/other.xml
 venv
+__pycache__/solutions.cpython-39.pyc

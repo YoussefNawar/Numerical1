@@ -1,0 +1,13 @@
+{"Problem_Details":[
+  {
+    "f(x)": "2x+sin(x)",
+    "Selection": "Bisection",
+    "x1": 3,
+    "x2": 5,
+    "g(x)": "" ,
+    "MaxIteration": "",
+    "precision": ""
+  }
+]
+}
+
