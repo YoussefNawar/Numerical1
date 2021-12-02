@@ -1,13 +1,11 @@
-{"Problem_Details":[
-  {
-    "f(x)": "2x+sin(x)",
-    "Selection": "Bisection",
-    "x1": 3,
+{
+    "f(x)": "x**3 - 5*x - 9",
+    "Selection": "Newton Raphhsen",
+    "x1": 2,
     "x2": 5,
     "g(x)": "" ,
     "MaxIteration": "",
     "precision": ""
   }
-]
-}
+
 

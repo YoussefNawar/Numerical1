@@ -19,7 +19,7 @@
                 pos_hint: {'center': 1}
             Button:
                 id: uploadBtn
-                text: "file explorer"
+                text: "open"
                 pos_hint: {'right': 1}
                 size_hint_x: 0.3
                 size_hint_y: 1
@@ -140,20 +140,21 @@
 
         BoxLayout:
             orientation: "horizontal"
-            size_hint: 1, 0.5
+            size_hint: 1, 0.7
             spacing : 20
             BoxLayout:
                 orientation: "horizontal"
                 Label:
                     text: "answer"
                     size_hint_x: 0.1
-                Label:
-                    id : answerField
-                    text_size: self.size
-                    halign: 'left'
-                    valign: 'top'
-                    bold: True
-                    size_hint_x: 0.9
+                ScrollView:
+                    Label:
+                        id : answerField
+                        size_hint: None, None
+                        size: self.texture_size
+                        halign: 'left'
+                        valign: 'top'
+                        bold: True
 <LoadDialog>:
     BoxLayout:
         size: root.size
@@ -167,7 +168,7 @@
             height: 30
             Button:
                 text: "Cancel"
-                on_release: root.dismiss_popup()
+                on_release: root.cancel()
             Button:
                 text: "Load"
                 on_release: root.load(filechooser.path, filechooser.selection)

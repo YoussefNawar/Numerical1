@@ -1,12 +1,13 @@
 import os
-
+import json
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
 
 import solutions
 from solutions import *
@@ -32,13 +33,14 @@ class LoadDialog(FloatLayout):
 
     def dismiss_popup(self):
         self._popup.dismiss()
-    pass
-
 
 class CustomDropDown(BoxLayout):
     state = False
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
+
+    def printAnswer(self, iterationList, x):
+        pass
 
     def selection(self, text):
         if text == 'Bisection':
@@ -69,16 +71,18 @@ class CustomDropDown(BoxLayout):
         self.ids.dropdown.select(text)
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
-        if selection is 'Bisection':
-            self.ids.answerField.text = str(solutions.bisection(inputText,int(x2),int(x1)))
-        elif selection is 'Regula falsi':
-            self.ids.answerField = str(solutions.falsi(inputText, int(x2), int(x1)))
-        elif selection is 'Fixed point':
-            self.ids.answerField = str(solutions.fixed(inputText,int(gx), int(x2)))
-        elif selection is 'Newton Raphhsen':
-            self.ids.answerField = str(solutions.Newton(inputText,int(x1)))
+        if selection == 'Bisection':
+            answers, x = solutions.bisection(inputText, int(x1), int(x2))
+        elif selection == 'Regula falsi':
+            answers, x = solutions.falsi(inputText, int(x1), int(x2))
+        elif selection == 'Fixed point':
+            answers, x = solutions.fixed(inputText, gx, int(x1))
+        elif selection == 'Newton Raphhsen':
+            answers, x = solutions.Newton(inputText, int(x1))
         else:
-            self.ids.answerField = str(solutions.secant(inputText,int(x1),int(x2)))
+            answers, x = solutions.secant(inputText, int(x1), int(x2))
+        self.ids.answerField.text = str(answers) + str(x)
+
     def upload(self):
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
         self._popup = Popup(title="Load file", content=content,
@@ -90,7 +94,20 @@ class CustomDropDown(BoxLayout):
 
     def load(self, path, filename):
         with open(os.path.join(path, filename[0])):
-            print(path,filename)
+            f = open(filename[0])
+            data = json.load(f)
+            print(data)
+            fx = data.get('f(x)')
+            Selection = data.get("Selection")
+            x1 = data.get("x1")
+            x2 = data.get("x2")
+            gx = data.get("g(x)")
+            maxIteration = data.get("MaxIteration")
+            precision = data.get("precision")
+            self.evaluate(fx, Selection, x1, x2, gx, maxIteration, precision)
+        self.dismiss_popup()
+
+    def cancel(self):
         self.dismiss_popup()
 
 
