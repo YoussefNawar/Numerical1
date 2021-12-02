@@ -1,5 +1,5 @@
 import os
-
+import json
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -105,7 +105,18 @@ class CustomDropDown(BoxLayout):
 
     def load(self, path, filename):
         with open(os.path.join(path, filename[0])):
-            print(path, filename)
+            f = open(filename[0])
+            data = json.load(f)
+            for i in data["Problem_Details"]:
+                print(i)
+                fx = i.get('f(x)')
+                Selection = i.get("Selection")
+                x1 = i.get("x1")
+                x2 = i.get("x2")
+                gx = i.get("g(x)")
+                maxIteration = i.get("MaxIteration")
+                precision = i.get("precision")
+                self.evaluate(fx, Selection, x1, x2, gx, maxIteration, precision)
         self.dismiss_popup()
 
 

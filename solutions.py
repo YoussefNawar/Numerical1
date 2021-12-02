@@ -158,7 +158,7 @@ def Newton(equation, x0):
     return iterationss, answer
 
 
-# print( Newton("x**3 - 5*x - 9",2))
+# Newton("x**3 - 5*x - 9",2))
 def fixed(equation1, equation2, x0):
     t1 = timeit.default_timer()
     max_iteration = 50
