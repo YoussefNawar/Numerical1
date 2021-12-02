@@ -30,7 +30,11 @@ def bisection_button():
     xlEntered = ttk.Entry(window, width=12, textvariable=xl).grid(column=1, row=6)
 
     def goo():
-        bisection(func.get(),xu.get(),xl.get())
+        mylistbox = Listbox(window)
+        mylistbox.grid(column=0,row=7)
+        i=1
+
+        mylistbox.insert(END,(bisection(func.get(),xu.get(),xl.get())))
 
 
     go = Button(window, text="go", activebackground="black", activeforeground="white", bg="grey", bd=10, command=goo).grid(column=0,row=7)
