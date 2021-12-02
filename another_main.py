@@ -76,16 +76,16 @@ class CustomDropDown(BoxLayout):
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
         if selection == 'Bisection':
-            iterations, x = solutions.bisection(inputText, int(x1), int(x2))
+            answers, x = solutions.bisection(inputText, int(x1), int(x2))
         elif selection == 'Regula falsi':
-            iterations, x = solutions.falsi(inputText, int(x1),int(x2))
+            answers, x = solutions.falsi(inputText, int(x1),int(x2))
         elif selection == 'Fixed point':
-            iterations, x = solutions.fixed(inputText, gx, int(x1))
+            answers, x = solutions.fixed(inputText, gx, int(x1))
         elif selection == 'Newton Raphhsen':
-            iterations, x = solutions.Newton(inputText, int(x1))
+            answers, x = solutions.Newton(inputText, int(x1))
         else:
-            iterations, x = solutions.secant(inputText, int(x1),int(x2))
-        self.ids.answerField.text = str(iterations) + str(x)
+            answers, x = solutions.secant(inputText, int(x1), int(x2))
+        self.ids.answerField.text = str(answers) + str(x)
 
     def upload(self):
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
@@ -100,16 +100,15 @@ class CustomDropDown(BoxLayout):
         with open(os.path.join(path, filename[0])):
             f = open(filename[0])
             data = json.load(f)
-            for i in data["Problem_Details"]:
-                print(i)
-                fx = i.get('f(x)')
-                Selection = i.get("Selection")
-                x1 = i.get("x1")
-                x2 = i.get("x2")
-                gx = i.get("g(x)")
-                maxIteration = i.get("MaxIteration")
-                precision = i.get("precision")
-                self.evaluate(fx, Selection, x1, x2, gx, maxIteration, precision)
+            print(data)
+            fx = data.get('f(x)')
+            Selection = data.get("Selection")
+            x1 = data.get("x1")
+            x2 = data.get("x2")
+            gx = data.get("g(x)")
+            maxIteration = data.get("MaxIteration")
+            precision = data.get("precision")
+            self.evaluate(fx, Selection, x1, x2, gx, maxIteration, precision)
         self.dismiss_popup()
 
 
