@@ -9,6 +9,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 
 import solutions
+from solutions import *
 
 # Set the app size
 # Window.size = (500, 700)
@@ -68,10 +69,16 @@ class CustomDropDown(BoxLayout):
         self.ids.dropdown.select(text)
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
-        print(inputText, selection)
-        # solutions.bisection()
-        self.ids.answerField.text = inputText + " " + selection
-
+        if selection is 'Bisection':
+            self.ids.answerField.text = str(solutions.bisection(inputText,int(x2),int(x1)))
+        elif selection is 'Regula falsi':
+            self.ids.answerField = str(solutions.falsi(inputText, int(x2), int(x1)))
+        elif selection is 'Fixed point':
+            self.ids.answerField = str(solutions.fixed(inputText,int(gx), int(x2)))
+        elif selection is 'Newton Raphhsen':
+            self.ids.answerField = str(solutions.Newton(inputText,int(x1)))
+        else:
+            self.ids.answerField = str(solutions.secant(inputText,int(x1),int(x2)))
     def upload(self):
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
         self._popup = Popup(title="Load file", content=content,

@@ -6,9 +6,7 @@ from sympy import sympify
 from sympy.utilities.lambdify import lambdify
 from sympy import symbols
 import sympy as sym
-
-
-def f(equation, value):
+def f(equation,value):
     equation = equation.replace('ln', 'sym.log')
     equation = equation.replace('sin', 'sym.sin')
     equation = equation.replace('cos', 'sym.cos')
@@ -19,9 +17,7 @@ def f(equation, value):
     expr = sympify(equation)
     res = expr.subs(x, value)
     return res
-
-
-def g(equation, value):
+def g(equation,value):
     equation = equation.replace('ln', 'sym.log')
     equation = equation.replace('sin', 'sym.sin')
     equation = equation.replace('cos', 'sym.cos')
@@ -34,9 +30,8 @@ def g(equation, value):
     res = expr.subs(x, value)
     return res
 
-
-def differentiation(equation, value):
-    # equation = equation.replace('ln', 'sym.log')
+def differentiation(equation,value):
+    #equation = equation.replace('ln', 'sym.log')
     equation = equation.replace('sin', 'sym.sin')
     equation = equation.replace('cos', 'sym.cos')
     equation = equation.replace('tan', 'sym.tan')
@@ -45,153 +40,177 @@ def differentiation(equation, value):
     x = symbols('x')
     differ = eval(equation).diff(x)
     return differ.evalf(subs={x: value})
-
-
-def bisection(equation, xu, xl, max_iterations=50, epsilon=0.0001):
+def bisection(equation,xu,xl):
     t1 = timeit.default_timer()
-    if f(equation, xu) * f(equation, xl) >= 0:
+    max_iterations = 50
+    epsilon = 0.00001
+
+
+
+    if f(equation,xu) * f(equation,xl) >= 0:
         print("error in range")
         return
     else:
-        xr = (xu + xl) / 2
-        iteration = 0
-        approximate_error = 0
-        iterationlist = []
-        for i in range(1, max_iterations):
-            iteration = iteration + 1
+        xr = (xu + xl)/2
 
-            iterationlist.append("iteration number %d, xr = %.16f, f(xr) = %.16f and the precision = .%16f " % (
-                iteration, xr, f(equation, xr), approximate_error))
+
+        iterationlist = []
+        #iterationlist.append(f'i \t\t\t xl \t\t\t\t\t xu \t\t\t\t\t xr \t\t\t\t\t f(xr) \t\t\t\t\t Ea(%)\n')
+
+        for i in range(1, max_iterations+1):
+
+
+            #iterationlist.append("%d, xr = %.16f, f(xr) = %.16f and the precision = .%16f " %(i,xr,f(equation,xr),approximate_error))
             if f(equation, xr) * f(equation, xl) < 0:
                 xu = xr
             elif f(equation, xr) * f(equation, xl) > 0:
                 xl = xr
             prev = xr
-            xr = (xl + xu) / 2
-            approximate_error = abs((xr - prev) / xr)
+            xr = (xu + xl) / 2
+            approximate_error = abs((xr - prev) / xr)*100
+            iterationlist.append("%d, xr = %.16f, f(xr) = %.16f and the precision = .%16f " % (
+            i, xr, f(equation, xr), approximate_error))
 
             if approximate_error < epsilon:
                 break
     t2 = timeit.default_timer()
     for iteration in iterationlist:
         print(iteration)
-    print("Root = ", xr, "Precision: ", approximate_error, "\nnumber of iterations = ", iteration, "\nRuntime: ",
-          (t2 - t1))
+    print("Root = ", xr, "Precision: ", approximate_error, "\nnumber of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
     return xr, approximate_error, iteration, iterationlist, (t2 - t1)
+#bisection("x**3-5*x-9",3,2)
 
 
-def falsi(equation, xu, xl, max_iterations=50, epsilon=0.0001):
+
+
+def falsi(equation,xu,xl):
     t1 = timeit.default_timer()
-    approximate_error = 0
-    prev = 0
-    if f(equation, xu) * f(equation, xl) >= 0:
+    max_iterations = 50
+    epsilon = 0.00001
+
+
+    if f(equation,xu) * f(equation,xl) >= 0:
         print("error in range")
         exit()
     else:
-        iteration = 0
+
         xr = ((xl * f(equation, xu)) - (xu * f(equation, xl))) / (f(equation, xu) - f(equation, xl))
         iterationlist = []
-        if f(equation, xr) == 0:
-            print("xr = %d" % (xr))
+        if f(equation,xr) == 0:
+            print("xr = %d"%(xr))
             exit()
-        for i in range(1, max_iterations):
-            iteration += 1
+        for i in range(1,max_iterations):
 
-            approximate_error = abs((xr - prev) / xr)
 
-            if approximate_error < epsilon or f(equation, xr) == 0:
-                break
-            prev = xr
-            if f(equation, xr) < 0:
+
+
+
+
+            if f(equation,xr) < 0:
                 xl = xr
-            elif f(equation, xr) > 0:
+            elif  f(equation,xr) > 0:
                 xu = xr
-
-            iterationlist.append(
-                "Iteration number %d, xr = %.16f, f(xr) = %.16f and precision: %.16f " % (
-                    iteration, xr, f(equation, xr), approximate_error))
-
+            prev = xr
             xr = ((xl * f(equation, xu)) - (xu * f(equation, xl))) / (f(equation, xu) - f(equation, xl))
+            approximate_error = approximate_error = abs((xr - prev) / xr)*100
+            iterationlist.append("%d, xr = %.16f, f(xr) = %.16f and the precision = .%16f " % (
+            i, xr, f(equation, xr), approximate_error))
 
-    t2 = timeit.default_timer()
+            if approximate_error < epsilon:
+                break
+
+
+
+
+
+
+
+    t2 =  timeit.default_timer()
     for iteration in iterationlist:
         print(iteration)
     print("Root = ", xr, "Precision: ", approximate_error, "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
     return xr, approximate_error, iteration, iterationlist, (t2 - t1)
+#falsi("x**3-5*x-9",3,2)
 
-
-def Newton(equation, x0, max_iterations=50, epsilon=0.0001):
+def Newton(equation,x0):
     t1 = timeit.default_timer()
-    iterations = 0
+
+    max_iteration = 50
+    epsilon = 0.00001
     x = x0
-    approximate_error = 0
+
     iterationlist = []
 
-    for i in range(max_iterations):
-        iterations += 1
-        fx = f(equation, x)
+    for i in range(1,max_iteration):
+        prev = x
+        x = x - (f(equation,x) / differentiation(equation, x))
+        approximate_error = abs((x - prev) / x) * 100
         iterationlist.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (
-                iterations, x, f(equation, x), approximate_error))
-        xn = x
-        x = x - (fx / differentiation(equation, x))
-        approximate_error = abs((x - xn) / x)
+            i, x, f(equation, x), approximate_error))
+
+
 
         if approximate_error < epsilon:
             break
     t2 = timeit.default_timer()
     for iteration in iterationlist:
         print(iteration)
-    print("Root = ", x, "Precision: ", approximate_error, "\n# of iterations = ", iterations, "\nRuntime: ", (t2 - t1))
-    return x, approximate_error, iterations, iterationlist, (t2 - t1)
-
-
-def fixed(equation1, equation2, x0, max_iterations=50, epsilon=0.0001):
+    print("Root = ", x, "Precision: ", approximate_error, "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
+    return x, approximate_error, iteration, iterationlist, (t2 - t1)
+#Newton("x**3 - 5*x - 9",2)
+def fixed(equation1,equation2,x0):
     t1 = timeit.default_timer()
+    max_iteration = 50
+    epsilon = 0.00001
     x = x0
-    iterations = 0
+
     iterationlist = []
-    ea = 0
-    for i in range(max_iterations):
-        iterations = iterations + 1
-        xf = x
-        x = g(equation2, x)
+
+    for i in range(1,max_iteration):
+
+        prev = x
+        x = g(equation2,x)
+        approximate_error = abs((x - prev) / x) * 100
         iterationlist.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (
-                iterations, x, f(equation1, x), ea))
-        ea = abs((x - xf) / x)
-        if ea < epsilon:
+                i, x, f(equation1, x), approximate_error))
+
+        if approximate_error < epsilon:
             break
     t2 = timeit.default_timer()
     for iteration in iterationlist:
         print(iteration)
-    print("Root = ", x, "Precision: ", ea, "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
-    return x, ea, iteration, iterationlist, (t2 - t1)
+    print("Root = ", x, "Precision: ", approximate_error, "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
+    return x, approximate_error, iteration, iterationlist, (t2 - t1)
+#fixed("x*x*x + x*x -1","1/((x+1)**0.5)",2)
 
-
-# fixed("x*x*x + x*x -1","1/((x+1)**0.5)",2)
-
-def secant(equation, x0, x1, max_iterations=50, epsilon=0.0001):
+def secant(equation,x0,x1):
     t1 = timeit.default_timer()
+    max_iteration = 50
+    epsilon = 0.00001
 
-    iteration = 0
     iterationlist = []
-    ea = 0
 
-    for i in range(max_iterations):
-        iteration = iteration + 1
-        x2 = x0 - ((x1 - x0) * f(equation, x0) / (f(equation, x1) - f(equation, x0)))
+
+    for i in range (1,max_iteration):
+
+        x2 = x0 - (x1 - x0) * f(equation,x0) / (f(equation,x1) - f(equation,x0))
+        approximate_error = abs(f(equation,x2))
         iterationlist.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (
-                iteration, x2, f(equation, x2), ea))
+                i, x2, f(equation, x2), approximate_error))
         x0 = x1
         x1 = x2
 
-        ea = abs((x2 - x0) / x2)
-        if ea < epsilon:
+
+        if approximate_error < epsilon:
             break
     t2 = timeit.default_timer()
     for iteration in iterationlist:
         print(iteration)
-    print("\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
-    return x2, ea, iteration, iterationlist, (t2 - t1)
+    print( "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1))
+    return x2, approximate_error, iteration, iterationlist, (t2 - t1)
+#secant("x**3 - 5*x - 9",2,3)
+
+
