@@ -140,20 +140,21 @@
 
         BoxLayout:
             orientation: "horizontal"
-            size_hint: 1, 0.5
+            size_hint: 1, 0.7
             spacing : 20
             BoxLayout:
                 orientation: "horizontal"
                 Label:
                     text: "answer"
                     size_hint_x: 0.1
-                Label:
-                    id : answerField
-                    text_size: self.size
-                    halign: 'left'
-                    valign: 'top'
-                    bold: True
-                    size_hint_x: 0.9
+                ScrollView:
+                    Label:
+                        id : answerField
+                        size_hint: None, None
+                        size: self.texture_size
+                        halign: 'left'
+                        valign: 'top'
+                        bold: True
 <LoadDialog>:
     BoxLayout:
         size: root.size

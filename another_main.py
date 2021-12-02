@@ -19,9 +19,6 @@ from solutions import *
 Builder.load_file('calc.kv')
 
 
-class ScrolllabelLabel(ScrollView):
-    text = StringProperty('')
-
 
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
@@ -78,21 +75,17 @@ class CustomDropDown(BoxLayout):
         self.ids.dropdown.select(text)
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
-        if selection is 'Bisection':
-            iterationlist, x = solutions.bisection(inputText, int(x1), int(x2))
-            self.ids.answerField.text = str(iterationlist) + str(x)
-        elif selection is 'Regula falsi':
-            iterationlist, x = solutions.falsi(inputText, int(x1),int( x2))
-            self.ids.answerField.text = str(iterationlist) + str(x)
-        elif selection is 'Fixed point':
-            iterationlist, x = solutions.fixed(inputText, gx, int(x1))
-            self.ids.answerField.text = str(iterationlist) + str(x)
+        if selection == 'Bisection':
+            iterations, x = solutions.bisection(inputText, int(x1), int(x2))
+        elif selection == 'Regula falsi':
+            iterations, x = solutions.falsi(inputText, int(x1),int(x2))
+        elif selection == 'Fixed point':
+            iterations, x = solutions.fixed(inputText, gx, int(x1))
         elif selection == 'Newton Raphhsen':
-            iterationlist , x = solutions.Newton(inputText , int(x1))
-            self.ids.answerField.text = str(iterationlist) + str(x)
+            iterations, x = solutions.Newton(inputText, int(x1))
         else:
-            iterationlist, x = solutions.secant(inputText, int(x1),int(x2))
-            self.ids.answerField.text = str(iterationlist) + str(x)
+            iterations, x = solutions.secant(inputText, int(x1),int(x2))
+        self.ids.answerField.text = str(iterations) + str(x)
 
     def upload(self):
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
