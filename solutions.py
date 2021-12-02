@@ -8,10 +8,8 @@ from sympy import symbols
 import sympy as sym
 def f(equation,value):
     equation = equation.replace('ln', 'sym.log')
-    equation = equation.replace('sin', 'sym.sin')
-    equation = equation.replace('cos', 'sym.cos')
-    equation = equation.replace('tan', 'sym.tan')
-    equation = equation.replace('exp', 'sym.exp')
+
+    equation = equation.replace('exp', math.exp())
     equation = equation.replace('^', '**')
     x = var('x')
     expr = sympify(equation)
