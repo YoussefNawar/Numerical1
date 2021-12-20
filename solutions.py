@@ -43,8 +43,9 @@ def bisection(equation, xu, xl, epsilon=0.00001, max_iterations=50):
 
 
     if f(equation, xu) * f(equation, xl) >= 0:
-        print("error in range")
-        return
+        output = ("error in range")
+        stringnothing = ("")
+        return output,stringnothing
     else:
         xr = (xu + xl) / 2
         approximate_error = 0
@@ -80,7 +81,7 @@ def bisection(equation, xu, xl, epsilon=0.00001, max_iterations=50):
     return iterationss,answer
 
 
-#bisection('e**-x *(3.2 * sin(x) - 0.5 *cos(x))',4,3)
+bisection('x^2 + 4',4,3)
 
 
 def falsi(equation, xu, xl, epsilon=0.00001, max_iterations=50):
@@ -189,7 +190,7 @@ def fixed(equation1, equation2, x0, epsilon=0.00001, max_iterations=50):
         iterationss += iteration + '\n'
     answer = "Root = ", x, "Precision: ", approximate_error, "\n# of iterations = ", iteration, "\nRuntime: ", (t2 - t1)
     print(answer)
-    return iterationss, answer
+    return iterationss, float(answer)
 
 #fixed("x*x*x + x*x -1","1/((x+1)**0.5)",2)
 

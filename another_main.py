@@ -72,15 +72,15 @@ class CustomDropDown(BoxLayout):
 
     def evaluate(self, inputText, selection, x1, x2, gx, maxIteration, precision):
         if selection == 'Bisection':
-            answers, x = solutions.bisection(inputText, int(x1), int(x2))
+            answers, x = solutions.bisection(inputText, float(x1),float(x2),float (precision),int(maxIteration))
         elif selection == 'Regula falsi':
-            answers, x = solutions.falsi(inputText, int(x1), int(x2))
+            answers, x = solutions.falsi(inputText, float(x1),float(x2),float (precision),int(maxIteration))
         elif selection == 'Fixed point':
-            answers, x = solutions.fixed(inputText, gx, int(x1))
+            answers, x = solutions.fixed(inputText, gx, float(x1),float (precision),int(maxIteration))
         elif selection == 'Newton Raphhsen':
-            answers, x = solutions.Newton(inputText, int(x1))
+            answers, x = solutions.Newton(inputText, (float)(x1),float (precision),int(maxIteration))
         else:
-            answers, x = solutions.secant(inputText, int(x1), int(x2))
+            answers, x = solutions.secant(inputText, float(x1),float(x2),float (precision),int(maxIteration))
         self.ids.answerField.text = str(answers) + str(x)
 
     def upload(self):
